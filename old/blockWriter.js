@@ -6,8 +6,8 @@ if (config.debug) {
     storage = require('./blockstorage/digitalOceanStorage');
 }
 const assert = require("assert");
-const {getLastWrittenBlock} = require('./functions/getLastWrittenBlock');
-const {writeBlock} = require("./functions/writeBlock");
+const {getLastWrittenBlock} = require('../functions/getLastWrittenBlock');
+const {writeBlock} = require("../functions/writeBlock");
 const writerEndpoint = config.writerEndpoint;
 console.log("Will write to " + writerEndpoint);
 

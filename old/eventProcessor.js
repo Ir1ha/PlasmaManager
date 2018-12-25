@@ -1,8 +1,8 @@
 const config = require('./config');
 const redis = require("redis");
 
-const {initMQ} = require("./functions/initMQ");
-const {processEventFromQueue} = require("./functions/processEventFromQueue");
+const {initMQ} = require("../functions/initMQ");
+const {processEventFromQueue} = require("../functions/processEventFromQueue");
 const eventNames = ["DepositEvent", "ExitStartedEvent", "DepositWithdrawStartedEvent"];
 
 async function startEventProcessing() {

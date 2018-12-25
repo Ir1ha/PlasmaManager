@@ -5,8 +5,8 @@ if (config.debug) {
 } else {
     storage = require('./blockstorage/digitalOceanStorage');
 }
-const {getBlockHash} = require("./functions/getBlockHash");
-const {assembleBlock} = require("./functions/assembleBlock");
+const {getBlockHash} = require("../functions/getBlockHash");
+const {assembleBlock} = require("../functions/assembleBlock");
 const assemblerEndpoint = config.assemblerEndpoint;
 const assemblyInterval = config.blockAssemblyInterval;
 

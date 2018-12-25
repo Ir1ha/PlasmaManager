@@ -1,9 +1,9 @@
 const config = require('./config');
 const Web3 = require('web3');
 const redis = require("redis");
-const getRedisFunctions = require("./functions/createRedis");
-const {initMQ} = require("./functions/initMQ");
-const {processBlockForEvent} = require("./functions/processBlockForEvent")
+const getRedisFunctions = require("../functions/createRedis");
+const {initMQ} = require("../functions/initMQ");
+const {processBlockForEvent} = require("../functions/processBlockForEvent")
 const eventNames = ["DepositEvent", "ExitStartedEvent", "DepositWithdrawStartedEvent"];
 const fastEventNames = ["ExitStartedEvent", "DepositWithdrawStartedEvent"];
 const slowEventNames = ["DepositEvent"];

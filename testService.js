@@ -9,3 +9,4 @@ async function main () {
 }
 
 console.log('hi');
+console.log('ok');

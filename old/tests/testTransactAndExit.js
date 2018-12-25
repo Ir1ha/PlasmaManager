@@ -11,16 +11,16 @@ const alice = keys[1];
 const aliceAddress = addresses[1];
 const bobAddress = addresses[2];
 
-const {initMQ} = require('../../functions/initMQ');
-const {assembleBlock} = require("../../functions/assembleBlock");
-const {getBlockHash} = require("../../functions/getBlockHash");
-const {processBlockForEvent} = require("../../functions/processBlockForEvent");
-const {writeBlock} = require("../../functions/writeBlock");
-const {processEventFromQueue} = require("../../functions/processEventFromQueue");
-const {getLastWrittenBlock} = require("../../functions/getLastWrittenBlock");
-const {getUTXOlist} = require("../../functions/getUTXOlist");
-const {createTransaction, parseTransactionIndex} = require("../../functions/createTransaction");
-const {sendTransaction} = require("../../functions/sendTransaction");
+const {initMQ} = require('../functions/initMQ');
+const {assembleBlock} = require("../functions/assembleBlock");
+const {getBlockHash} = require("../functions/getBlockHash");
+const {processBlockForEvent} = require("../functions/processBlockForEvent");
+const {writeBlock} = require("../functions/writeBlock");
+const {processEventFromQueue} = require("../functions/processEventFromQueue");
+const {getLastWrittenBlock} = require("../functions/getLastWrittenBlock");
+const {getUTXOlist} = require("../functions/getUTXOlist");
+const {createTransaction, parseTransactionIndex} = require("../functions/createTransaction");
+const {sendTransaction} = require("../functions/sendTransaction");
 
 const ethUtil = require('ethereumjs-util');
 const Web3 = require('web3');

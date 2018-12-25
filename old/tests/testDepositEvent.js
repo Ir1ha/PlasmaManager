@@ -9,14 +9,14 @@ const {addresses, keys} = require("../testScripts/keys");
 const alice = keys[1];
 const aliceAddress = addresses[1];
 
-const {initMQ} = require('../../functions/initMQ');
-const {assembleBlock} = require("../../functions/assembleBlock");
-const {getBlockHash} = require("../../functions/getBlockHash");
-const {processBlockForEvent} = require("../../functions/processBlockForEvent");
-const {writeBlock} = require("../../functions/writeBlock");
-const {processEventFromQueue} = require("../../functions/processEventFromQueue");
-const {getLastWrittenBlock} = require("../../functions/getLastWrittenBlock");
-const {getUTXOlist} = require("../../functions/getUTXOlist");
+const {initMQ} = require('../functions/initMQ');
+const {assembleBlock} = require("../functions/assembleBlock");
+const {getBlockHash} = require("../functions/getBlockHash");
+const {processBlockForEvent} = require("../functions/processBlockForEvent");
+const {writeBlock} = require("../functions/writeBlock");
+const {processEventFromQueue} = require("../functions/processEventFromQueue");
+const {getLastWrittenBlock} = require("../functions/getLastWrittenBlock");
+const {getUTXOlist} = require("../functions/getUTXOlist");
 
 const ethUtil = require('ethereumjs-util');
 const Web3 = require('web3');
@@ -66,8 +66,10 @@ async function main() {
     assert(list.utxos.length === 1);
 }
 
-main().then(() => {
+/*main().then(() => {
     console.log("Done");
 }).catch((err) => {
     console.log(err);
-})
+}) */
+
+console.log("Done");

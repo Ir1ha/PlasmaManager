@@ -7,9 +7,9 @@ if (config.debug) {
 }
 
 const Web3 = require('web3');
-const {initMQ} = require("../functions/initMQ");
-const {processExitChallengeFromQueue} = require("../functions/processExitChallenge");
-const {processDepositExitChallengeFromQueue} = require("../functions/processDepositExitChallenge");
+const {initMQ} = require("./functions/initMQ");
+const {processExitChallengeFromQueue} = require("./functions/processExitChallenge");
+const {processDepositExitChallengeFromQueue} = require("./functions/processDepositExitChallenge");
 const eventNames = ["DepositEvent", "ExitStartedEvent", "DepositWithdrawStartedEvent"];
 
 async function startChallengeProcessing() {

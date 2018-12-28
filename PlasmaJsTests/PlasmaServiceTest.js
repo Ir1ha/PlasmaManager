@@ -1,12 +1,40 @@
-const assert = require('assert');
-const { getUTXOlist } = require('../old/functions/getUTXOlist');
+const mocha = require('mocha');
+const PlasmaService = require('../PlasmaJsLib/PlasmaService/PlasmaService.js');
+const TestHelper = require('./TestHelper.js');
 
-async function main () {
-  const list = await getUTXOlist(aliceAddress, '127.0.0.1:3001');
-  assert(list.utxos.length === 1);
-  const a = 4;
-  console.log(a);
-}
+mocha.describe('GetUTXOs', () => {
+  mocha.it('Get UTXO list should return no error', function (done) {
+    const expectedResult = false;
+    PlasmaService.getUTXO(TestHelper.EthAddress, true).then(function (val) {
+      if (val.error !== expectedResult) {
+        throw new Error(`Expected ${expectedResult}, but got ${val.error}`);
+      }
+      done();
+    });
+  });
 
-console.log('hi');
-console.log('ok');
+/*
+mocha.it('Get UTXO list should return not empty list', function (done) {
+  const unexpectedResult = 0;
+  let result = 0;
+  PlasmaService.getUTXO(TestHelper.EthAddress, true).then(function (val) {
+    if (val.utxos.length === unexpectedResult) {
+      throw new Error(`This address has UTXOs, but got ${val.utxos.length}`);
+    }
+    done();
+  });
+});
+*/
+});
+
+mocha.describe('GetBlock', () => {
+  mocha.it('Get Block should return not empty block', function (done) {
+    const expectedResult = 315;
+    PlasmaService.getBlock(1, true).then(function (val) {
+      if (!val) {
+        throw new Error(`Expected block, but got empty`);
+      }
+      done();
+    });
+  });
+});

@@ -1,11 +1,26 @@
 // import { PlasmaTransaction, PlasmaTransactionWithSignature, TxTypeSplit, TxTypeMerge, TransactionInput, TransactionOutput, Block } from '@thematter_io/plasma.js';
 // import { BN } from 'bn.js';
 const plasma = require('@thematter_io/plasma.js');
-const ethUtil = require('ethereumjs-util')
+const ethUtil = require('ethereumjs-util');
 const fetch = require('node-fetch');
 const PlasmaURLs = require('./PlasmaURLs.js');
+// const FileReader = require('filereader')
 
 class PlasmaService {
+  constructor () {
+    this.state = {
+      transferAddressTo: '',
+      utxos: []
+    };
+  }
+  /// Getting list of available UTXOs for the Ethereum address.
+  /// - Parameters:
+  ///   - address: Ethereum address from which UTXOs are collected.
+  ///   - onTestnet: Bool flag for possible endpoints:
+  ///     1. True for Rinkeby testnet;
+  ///     2. False for Mainnet.
+  /// - Returns: PlasmaUTXOs array.
+
   static async getUTXO (address, onTestnet) {
     let url = onTestnet ? PlasmaURLs.listUTXOsTestnet : PlasmaURLs.listUTXOsMainnet;
     let payload = {
@@ -32,12 +47,14 @@ class PlasmaService {
       }
       try {
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         if (data.utxos.length > 0) {
-          console.log('->', data.utxos.length);
+          // console.log('->', data.utxos.length);
+          return data;
           // Добавить преобразование из json -> utxo
         } else {
-          console.log('skipping:', data.utxos.length);
+          // console.log('UTXO list is clear:', data.utxos.length);
+          return data;
         }
       } catch (err) {
         console.log('JSON decode error:', err);
@@ -47,6 +64,14 @@ class PlasmaService {
     }
   }
 
+  /// Getting Plasma Block by its number.
+  /// - Parameters:
+  ///   - onTestnet: Bool flag for possible endpoints:
+  ///     1. True for Rinkeby testnet;
+  ///     2. False for Mainnet.
+  ///   - number: the number of Block.
+  /// - Returns: the Data of Block.
+
   static async getBlock (number, onTestnet) {
     let url = onTestnet ? PlasmaURLs.blockStorageTestnet : PlasmaURLs.blockStorageMainnet;
     let num = number.toString();
@@ -54,6 +79,9 @@ class PlasmaService {
     try {
       let response = await fetch(url, {
         method: 'GET',
+        headers: {
+          'Accept': 'application/octet-stream'
+        },
         mode: 'cors'
       });
       if (response.status !== 200) {
@@ -61,15 +89,27 @@ class PlasmaService {
         throw r;
       }
       try {
-        let data = await response.blob();
-        console.log(data);
+        const data = await response.arrayBuffer();
+        // console.log(data);
+        const blockBuffer = Buffer.from(data);
+        const block = new plasma.Block(blockBuffer);
+        // console.log(block);
+        return block;
       } catch (err) {
-        console.log('JSON decode error:', err);
+        console.log('Blob decode error:', err);
       }
     } catch (err) {
       console.log('Request error');
     }
   }
+
+  /// Sending transaction in Plasma.
+  /// - Parameters:
+  ///   - transaction: signed transaction that needs to be sent.
+  ///   - onTestnet: Bool flag for possible endpoints:
+  ///     1. True for Rinkeby testnet;
+  ///     2. False for Mainnet.
+  /// - Returns: the Bool flag: true if transaction is sent.
 
   static async sendRawTx (signedTransaction, onTestnet) {
     let url = onTestnet ? PlasmaURLs.sendRawTXTestnet : PlasmaURLs.sendRawTXMainnet;
@@ -98,6 +138,7 @@ class PlasmaService {
             throw data.reason;
           } else {
             console.log('Done');
+            return true;
           }
         });
       } catch (err) {
@@ -109,6 +150,6 @@ class PlasmaService {
   }
 }
 
-let fAddress = 'f8ff4e3dc7b5c627930a29cc962e190c1fd7b392a89736f3bd3d070f49e662b1';
-let test = PlasmaService.getUTXO(fAddress, true);
-let test1 = PlasmaService.getBlock(1, true);
+module.exports = PlasmaService;
+
+// PlasmaService.getBlock(1, true).then(val => console.log(val));

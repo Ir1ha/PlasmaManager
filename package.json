@@ -1,7 +1,12 @@
 {
   "name": "PlasmaManager",
   "version": "1.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "@thematter_io/plasma.js": "^1.0.3",
+    "bn.js": "^4.11.8",
+    "ethjs-util": "^0.1.6",
+    "node-fetch": "^2.3.0"
+  },
   "devDependencies": {
     "eslint": "^5.11.0",
     "eslint-config-google": "^0.11.0",

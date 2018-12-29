@@ -38,3 +38,15 @@ mocha.describe('GetBlock', () => {
     });
   });
 });
+
+mocha.describe('SendRawTx', () => {
+  mocha.it('SendRawTx should return true', function (done) {
+    const expectedResult = 315;
+    PlasmaService.sendRawTx(TestHelper.sigTx, true).then(function (val) {
+      if (!val) {
+        throw new Error(`Expected true, but got false`);
+      }
+      done();
+    });
+  });
+});

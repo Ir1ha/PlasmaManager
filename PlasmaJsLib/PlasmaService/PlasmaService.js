@@ -4,7 +4,6 @@ const plasma = require('@thematter_io/plasma.js');
 const ethUtil = require('ethereumjs-util');
 const fetch = require('node-fetch');
 const PlasmaURLs = require('./PlasmaURLs.js');
-// const FileReader = require('filereader')
 
 class PlasmaService {
   constructor () {
@@ -151,5 +150,3 @@ class PlasmaService {
 }
 
 module.exports = PlasmaService;
-
-// PlasmaService.getBlock(1, true).then(val => console.log(val));

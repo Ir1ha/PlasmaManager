@@ -1,5 +1,3 @@
-// import { PlasmaTransaction, PlasmaTransactionWithSignature, TxTypeSplit, TxTypeMerge, TransactionInput, TransactionOutput, Block } from '@thematter_io/plasma.js';
-// import { BN } from 'bn.js';
 const plasma = require('@thematter_io/plasma.js');
 const ethUtil = require('ethereumjs-util');
 const fetch = require('node-fetch');
@@ -8,12 +6,15 @@ const Tx = require('PlasmaTransaction');
 const BN = require('bn.js');
 
 class PlasmaService {
+  /*
+  // Not used in current realisation
   constructor () {
     this.state = {
       transferAddressTo: '',
       utxos: []
     };
   }
+  */
   /// Getting list of available UTXOs for the Ethereum address.
   /// - Parameters:
   ///   - address: Ethereum address from which UTXOs are collected.
@@ -86,6 +87,7 @@ class PlasmaService {
         mode: 'cors'
       });
       if (response.status !== 200) {
+        // To avoid ESlint error, change to PlasmaErrors
         const r = 'error loading transactions';
         throw r;
       }
@@ -94,7 +96,7 @@ class PlasmaService {
         // console.log(data);
         const blockBuffer = Buffer.from(data);
         const block = new plasma.Block(blockBuffer);
-        // console.log(block);
+        console.log(block);
         return block;
       } catch (err) {
         console.log('Blob decode error:', err);
@@ -118,7 +120,7 @@ class PlasmaService {
     const txHex = ethUtil.bufferToHex(serialized);
     let payload = {
       tx: txHex
-    }
+    };
     try {
       let response = await fetch(url, {
         method: 'POST',

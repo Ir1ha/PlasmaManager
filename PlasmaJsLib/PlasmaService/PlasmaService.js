@@ -4,6 +4,8 @@ const plasma = require('@thematter_io/plasma.js');
 const ethUtil = require('ethereumjs-util');
 const fetch = require('node-fetch');
 const PlasmaURLs = require('./PlasmaURLs.js');
+const Tx = require('PlasmaTransaction');
+const BN = require('bn.js');
 
 class PlasmaService {
   constructor () {
@@ -146,6 +148,32 @@ class PlasmaService {
     } catch (err) {
       console.log('Request error');
     }
+  }
+
+  static async merge (utxos, address) {
+    let allInputs = [];
+    let allOutputs = [];
+    let weiAmount = BN();
+
+    for (const utxo in utxos) {
+      weiAmount.iadd(new BN(utxo.value));
+      allInputs.push(Tx.createInput(utxo));
+    }
+    const out = new plasma.TransactionOutput({
+      outputNumberInTransaction: (new BN(0)).toArrayLike(Buffer, 'be', 1),
+      amountBuffer: weiAmount.toArrayLike(Buffer, 'be', 32),
+      to: ethUtil.toBuffer(address)
+    });
+    allOutputs.push(out);
+    const plasmaTransaction = new plasma.PlasmaTransaction({
+      // Add transactionType (now it isn't ready)
+      transactionType: (new BN(0)).toBuffer('be', 1),
+      inputs: allInputs,
+      outputs: allOutputs
+    });
+    const sigTx = Tx.createSignedTransaction(plasmaTransaction);
+    PlasmaService.sendRawTx(sigTx, true);
+    return true;
   }
 }
 

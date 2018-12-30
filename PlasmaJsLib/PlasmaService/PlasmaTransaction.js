@@ -3,6 +3,16 @@ const ethUtil = require('ethereumjs-util');
 const BN = ethUtil.BN;
 
 class Tx {
+  static createInput (utxo) {
+    const inp = new plasma.TransactionInput({
+      blockNumber: (new BN(utxo.blockNumber)).toArrayLike(Buffer, 'be', 4),
+      txNumberInBlock: (new BN(utxo.transactionNumber)).toArrayLike(Buffer, 'be', 4),
+      outputNumberInTransaction: (new BN(utxo.outputNumber)).toArrayLike(Buffer, 'be', 1),
+      amountBuffer: (new BN(utxo.value)).toArrayLike(Buffer, 'be', 32)
+    });
+    return inp;
+  }
+
   static createTransaction (transactionType, transactionNumber, inputs, outputs, privateKey) {
     const allInputs = [];
     const allOutputs = [];
@@ -33,11 +43,13 @@ class Tx {
       outputs: allOutputs
     });
 
+    return plasmaTransaction;
+  }
+
+  static createSignedTransaction (plasmaTransaction) {
     const sigTX = new plasma.PlasmaTransactionWithSignature({
       transaction: plasmaTransaction
     });
-    sigTX.sign(privateKey);
-
     return sigTX;
   }
 }
